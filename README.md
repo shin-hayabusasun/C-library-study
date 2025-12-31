@@ -37,6 +37,7 @@ gcc main.c -L. -lmylib
 int add(int a, int b);
 
 ```
+これによって、libmylib.aのバイナリの中身をmainから見れるように
 
 2. C ファイルでヘッダをインクルード  
 ```
@@ -48,10 +49,15 @@ return 0;
 }
 
 ```
+mainからでも見れる.hファイルをここでインポートすることで、リンカ時にlibmylib.aとmylib.hを使用できる。
+libmylib.aとmylib.hは同じディレクトリに
 
 3. コンパイル＆リンク  
 上記の gcc main.c -L. -lmylib でリンク時にリンカが libmylib.a と main.o を結びつける  
 その結果、main がライブラリ関数を呼べるようになる
+gcc -c mylib.c(リンカーなしでoファイルを作成) 
+ar rcs libmylib.a mylib.o(作ったファイルをライブラリファイルにする)
+gcc main.c -L. -lmylib(gcc main.c -Lどこにライブラリがあるかのパス -lライブラリ名)
 
 ---
 
@@ -61,3 +67,4 @@ return 0;
 ar で .a にまとめるとライブラリになる  
 リンカ（gcc のリンク時処理）が .o や .a を結びつけて実行可能バイナリを作る  
 ヘッダファイルはコンパイル時に関数の宣言を知らせるために必要
+oファイル同士のリンカ使用もある。例えば、2つのファイルでCを作ったときやinit.sとmain.cの組み込みの時
